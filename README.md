@@ -10,7 +10,10 @@
 ## 文件结构
 
 ```
-homework/
+heuristic-algorithms-homework/
+├── .gitignore       忽略构建产物（1.exe、生成的 anim.html）
+├── LICENSE          MIT
+├── README.md        本文件
 ├── coord.h          公共词汇：Matrix<T> 别名、Coordinate
 ├── grid.h           数据模型：Grid（地图、起终点、index / inside / walkable）
 ├── astar.h          算法：Astar 模板 + 访问者 hook（不依赖 Grid、不做文件读写）
@@ -31,8 +34,9 @@ homework/
 
 ## 构建命令
 
+在仓库根目录（clone 下来的目录名就是 `heuristic-algorithms-homework`）执行：
+
 ```powershell
-cd homework
 g++ -std=c++20 -Wall -Wextra -o 1.exe main.cpp mapfile.cpp render.cpp
 ```
 
