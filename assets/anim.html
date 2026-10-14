@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>A* 寻路过程</title>
+<style>
+  body{background:#161a1f;color:#d7dde5;margin:0;padding:24px;
+       font:14px/1.6 system-ui,"Microsoft YaHei","PingFang SC",sans-serif}
+  h1{font-size:17px;font-weight:600;margin:0 0 2px}
+  .meta{color:#8b97a6;font-size:13px;margin-bottom:14px}
+  .bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+  button{background:#2b333d;color:#d7dde5;border:1px solid #3d4653;border-radius:7px;
+         padding:6px 14px;font:inherit;cursor:pointer}
+  button:hover{background:#36404c}
+  input[type=range]{width:150px;vertical-align:middle}
+  #hud{color:#8b97a6;font-size:13px;margin-left:auto}
+  #grid{display:grid;gap:2px;width:max-content;padding:10px;background:#0f1317;border-radius:10px}
+  .cell{width:22px;height:22px;border-radius:4px;background:#232a33;
+        display:flex;align-items:center;justify-content:center;
+        font-size:11px;font-weight:700;color:#0f1317;transition:background .07s}
+  .wall{background:#39424e}
+  .frontier{background:#e0a458}
+  .closed{background:#3d7ebf}
+  .path{background:#4ec9a0}
+  .current{background:#ffe066;box-shadow:0 0 10px #ffe066}
+  .start{outline:2px solid #7ee787;outline-offset:-2px}
+  .end{outline:2px solid #ff7b72;outline-offset:-2px}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;color:#8b97a6;font-size:13px}
+  .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;
+            vertical-align:-1px}
+</style>
+</head>
+<body>
+<h1>A* 寻路过程</h1>
+<div class="meta" id="meta"></div>
+<div class="bar">
+  <button id="play">播放</button>
+  <button id="step">单步</button>
+  <button id="back">上一步</button>
+  <button id="reset">重置</button>
+  <button id="jump">跳到结束</button>
+  <label>速度 <input type="range" id="speed" min="5" max="400" step="5"><span id="spv"></span> ms/帧</label>
+  <span id="hud"></span>
+</div>
+<div id="grid"></div>
+<div class="legend">
+  <span><i style="background:#232a33"></i>未访问</span>
+  <span><i style="background:#39424e"></i>墙</span>
+  <span><i style="background:#e0a458"></i>边界（已发现，待扩展）</span>
+  <span><i style="background:#3d7ebf"></i>已扩展</span>
+  <span><i style="background:#ffe066"></i>当前扩展</span>
+  <span><i style="background:#4ec9a0"></i>最终路径</span>
+</div>
+<div id="note" class="meta"></div>
+<script>
+@@DATA@@
+
+@@SCRIPT@@
+</script>
+</body>
+</html>
