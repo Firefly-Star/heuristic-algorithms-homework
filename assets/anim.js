@@ -10,7 +10,8 @@ for (let i = 0; i < N * N; i++) {
 }
 
 document.getElementById('meta').textContent =
-  '规模 ' + N + '×' + N +
+  '启发函数 ' + HEURISTIC +
+  '　规模 ' + N + '×' + N +
   '　起点 (' + Math.floor(START / N) + ', ' + (START % N) + ')' +
   '　终点 (' + Math.floor(END / N) + ', ' + (END % N) + ')' +
   '　搜索事件 ' + EV.length + ' 次　路径 ' + ROUTE.length + ' 格';

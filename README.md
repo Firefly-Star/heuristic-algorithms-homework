@@ -17,6 +17,7 @@ heuristic-algorithms-homework/
 ├── coord.h          公共词汇：Matrix<T> 别名、Coordinate
 ├── grid.h           数据模型：Grid（地图、起终点、index / inside / walkable）
 ├── astar.h          算法：Astar 模板 + 访问者 hook（不依赖 Grid、不做文件读写）
+├── heuristic.h      启发函数：曼哈顿 / 欧几里得 / 切比雪夫 / Octile / 恒零 / 加权 / 完美表
 ├── mapfile.h        输入接口
 ├── mapfile.cpp      输入实现：解析地图文件
 ├── render.h         输出接口
@@ -52,10 +53,26 @@ g++ -std=c++20 -Wall -Wextra -o 1.exe main.cpp mapfile.cpp render.cpp
 ```powershell
 .\1.exe                                 # 读当前目录下的 map.txt
 .\1.exe map.txt                         # 指定地图文件
+.\1.exe map.txt --h=octile              # 选启发函数（默认 manhattan）
+.\1.exe map.txt --h=manhattan:1.5       # 加权重后缀，w > 1 就不再保证最优
 .\1.exe map.txt --anim                  # 顺便生成 anim.html（默认 60ms 一帧）
 .\1.exe map.txt --anim=120              # 指定每帧毫秒数
 .\1.exe map.txt --anim --out=out.html   # 指定动画输出文件名
 ```
+
+可用的启发函数名：
+
+| 名字 | 说明 |
+|---|---|
+| `manhattan` | 曼哈顿距离，默认。四邻域单位代价下可采纳且就是真实距离，最强 |
+| `euclidean` | 欧几里得距离。可采纳但很松，扩展数明显更多 |
+| `chebyshev` | 切比雪夫距离（L∞） |
+| `octile` | 对角距离，八邻域对角代价 √2 时精确 |
+| `zero` | 恒零，A\* 退化成 Dijkstra。用来做扩展数上界基线 |
+| `perfect` | 一次反向 BFS 求出真实剩余距离，扩展数最少的可采纳启发 |
+| `名字:数字` | 加权，如 `manhattan:1.5`。w > 1 不再可采纳，结果代价 ≤ w × 最优 |
+
+每个函数的可采纳性 / 一致性及其适配的移动模型，都写在 `heuristic.h` 的注释里。
 
 地图文件的格式（`1` 表示可通过，`0` 表示墙，坐标是「行, 列」）：
 

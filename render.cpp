@@ -13,6 +13,11 @@
 
 // ================= 控制台 =================
 
+void PrintHeuristic(std::ostream& os, std::string const& name)
+{
+    os << "启发函数: " << name << '\n';
+}
+
 void PrintLoadSummary(std::ostream& os, Grid const& g)
 {
     os << "规模: " << g.n
@@ -44,6 +49,19 @@ void PrintRouteLength(std::ostream& os, std::vector<Coordinate> const& route)
        << "（途经 " << route.size() << " 个格子）\n\n";
 }
 
+// 扩展了多少个格子 —— 比较不同启发函数时最有用的那个数字
+// （可采纳性决定路径长度对不对，h 的大小决定这个数字大不大）
+void PrintSearchStats(std::ostream& os, size_t expanded, size_t freeCells)
+{
+    os << "扩展格数: " << expanded;
+    if (freeCells)
+    {
+        long tenth = (long)(1000.0 * (double)expanded / (double)freeCells + 0.5);
+        os << "（占可通过格 " << (tenth / 10) << '.' << (tenth % 10) << "%）";
+    }
+    os << "\n\n";
+}
+
 // ================= HTML 动画 =================
 
 namespace {
@@ -60,13 +78,15 @@ void ReplaceAll(std::string& text, std::string const& from, std::string const& t
 std::string BuildData(Grid const& g,
                       std::vector<std::pair<char, size_t>> const& events,
                       std::vector<Coordinate> const& route,
-                      int delayMs)
+                      int delayMs,
+                      std::string const& heuristicName)
 {
     std::ostringstream d;
 
     d << "const N = " << g.n << ";\n";
     d << "const START = " << g.index(g.start) << ", END = " << g.index(g.end) << ";\n";
     d << "const DELAY = " << delayMs << ";\n";
+    d << "const HEURISTIC = \"" << heuristicName << "\";\n";
 
     d << "const MAP = \"";
     for (size_t i = 0; i < g.map.size(); ++i) d << (g.map[i] ? '1' : '0');
@@ -97,7 +117,8 @@ void WriteHtmlAnim(std::string const& path,
                    Grid const& g,
                    std::vector<std::pair<char, size_t>> const& events,
                    std::vector<Coordinate> const& route,
-                   int delayMs)
+                   int delayMs,
+                   std::string const& heuristicName)
 {
     std::ofstream out(path, std::ios::binary);
     if (!out)
@@ -109,6 +130,6 @@ void WriteHtmlAnim(std::string const& path,
     // 模板里有两个占位符：@@DATA@@ 和 @@SCRIPT@@
     std::string html = kAnimTemplate;
     ReplaceAll(html, "@@SCRIPT@@", kAnimScript);
-    ReplaceAll(html, "@@DATA@@", BuildData(g, events, route, delayMs));
+    ReplaceAll(html, "@@DATA@@", BuildData(g, events, route, delayMs, heuristicName));
     out << html;
 }
