@@ -1,0 +1,11 @@
+# 构建产物
+1.exe
+*.o
+*.obj
+
+# 用 1.exe <map> --anim 生成的动画，可随时重建
+anim.html
+
+# Python 缓存
+__pycache__/
+*.pyc
